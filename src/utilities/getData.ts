@@ -1,6 +1,9 @@
-export const getFakeWords = (level, page, count) => {
-  const numbers = [];
+import { Words } from './checkDeletedAndDifficultWords';
+
+export const getFakeWords = (level: number, page: number, count: number): Promise<Array<Words>> => {
+  const numbers: Array<number> = [];
   let wordsLevel;
+
   if (level !== 6) {
     wordsLevel = level + 1;
   } else {
@@ -27,9 +30,9 @@ export const getFakeWords = (level, page, count) => {
   return Promise.all([...promises]);
 };
 
-export const getWords = (level, page, count) => {
+export const getWords = (level: number, page: number, count: number): Promise<Array<Words>> => {
   const promises = [];
-  const numbers = [];
+  const numbers: Array<number> = [];
 
   if (count !== 1) {
     for (let i = 0; i < count; i += 1) {

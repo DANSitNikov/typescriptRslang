@@ -1,4 +1,6 @@
-function checkLearnedWords(learnedWords, resultWords) {
+import { Words } from './checkDeletedAndDifficultWords';
+
+function checkLearnedWords(learnedWords: Array<Words>, resultWords: Array<Words>) {
   const result = [];
 
   if (learnedWords.length === 0) return resultWords;

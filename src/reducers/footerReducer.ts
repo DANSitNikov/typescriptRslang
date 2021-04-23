@@ -1,10 +1,12 @@
 import { TOGGLE_SHOW } from '../actions/footerAction';
 
 const initialState = {
-  show: true,
+  show: true as boolean,
 };
 
-const footerReducer = (state = initialState, action) => {
+type InitialState = typeof initialState;
+
+const footerReducer = (state = initialState, action: any): InitialState => {
   switch (action.type) {
     case TOGGLE_SHOW:
       return {

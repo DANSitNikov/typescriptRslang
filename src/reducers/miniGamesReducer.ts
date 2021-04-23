@@ -6,18 +6,21 @@ import {
   SET_WORDS_FROM_DICTIONARY,
   SET_WORDS_FROM_TEXTBOOK,
 } from '../actions/mniGameAction';
+import { Words } from '../utilities/checkDeletedAndDifficultWords';
 
 const initialState = {
-  level: null,
-  fromTextbook: false,
-  wordsFromTextbook: null,
-  pageNumber: null,
-  groupNumber: null,
-  wordsFromDictionary: null,
-  fromDictionary: false,
+  level: null as null | number,
+  fromTextbook: false as boolean,
+  wordsFromTextbook: null as null | Array<Words>,
+  pageNumber: null as number | null,
+  groupNumber: null as null | number,
+  wordsFromDictionary: null as null | Array<Words>,
+  fromDictionary: false as boolean,
 };
 
-const miniGameReducer = (state = initialState, action) => {
+type InitialState = typeof initialState;
+
+const miniGameReducer = (state = initialState, action: any): InitialState => {
   switch (action.type) {
     case SET_LEVEL:
       return {

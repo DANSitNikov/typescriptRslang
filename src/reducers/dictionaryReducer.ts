@@ -9,15 +9,18 @@ import {
   SET_TO_REMOVE_WORDS,
   SET_TYPE,
 } from '../actions/dictionaryAction';
+import { Words } from '../utilities/checkDeletedAndDifficultWords';
 
 const initialState = {
-  difficultWords: [],
-  deletedWords: [],
-  learnedWords: [],
-  type: 'unknown',
+  difficultWords: [] as Array<Words>,
+  deletedWords: [] as Array<Words>,
+  learnedWords: [] as Array<Words>,
+  type: 'unknown' as string,
 };
 
-const dictionaryReducer = (state = initialState, action) => {
+type InitialState = typeof initialState;
+
+const dictionaryReducer = (state = initialState, action: any): InitialState => {
   switch (action.type) {
     case SET_TO_LEARNED_WORDS:
       return {
