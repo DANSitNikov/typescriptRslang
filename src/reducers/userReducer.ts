@@ -6,7 +6,7 @@ const LOGOUT = 'LOGOUT';
 // const SET_DELETED_COLLECTION = 'SET_DELETED_COLLECTION';
 // const SET_HARD_COLLECTION = 'SET_HARD_COLLECTION';
 
-interface User {
+export interface User {
   message?: string
   name?: string
   refreshToken?: string

@@ -1,9 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ProgressBar } from 'react-bootstrap';
-import style from './resultProgressBar.scss';
+import style from './resultProgressBar.module.scss';
 
-const ResultProgressBar = (props) => {
+interface Props {
+  correct: number
+  wrong: number
+  value: number
+}
+
+const ResultProgressBar: React.FC<Props> = (props) => {
   const { correct, wrong, value } = props;
 
   return (
@@ -12,12 +17,6 @@ const ResultProgressBar = (props) => {
       <ProgressBar label={wrong} variant="danger" now={wrong * value} key={2} />
     </ProgressBar>
   );
-};
-
-ResultProgressBar.propTypes = {
-  correct: PropTypes.number.isRequired,
-  wrong: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
 };
 
 export default ResultProgressBar;

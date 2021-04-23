@@ -3,7 +3,12 @@ import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import style from './fullScreenButton.module.scss';
 
-const FullScreenButton = (props) => {
+interface Props {
+  fullScreenStatus: boolean
+  onFullscreenBtnClick: (param: React.MouseEvent) => void
+}
+
+const FullScreenButton: React.FC<Props> = (props) => {
   const { fullScreenStatus, onFullscreenBtnClick } = props;
 
   return (

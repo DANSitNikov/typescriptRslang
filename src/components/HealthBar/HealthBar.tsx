@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import style from './health.module.scss';
 import src from '../../assets/images/heart/pixel-heart.png';
 
-const HealthBar = (props) => {
+const HealthBar: React.FC<{lives: number}> = (props) => {
   const { lives } = props;
 
   return (
@@ -12,10 +11,6 @@ const HealthBar = (props) => {
       {lives}
     </div>
   );
-};
-
-HealthBar.propTypes = {
-  lives: PropTypes.number.isRequired,
 };
 
 export default HealthBar;

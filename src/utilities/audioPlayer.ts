@@ -1,17 +1,19 @@
 import { Howl } from 'howler';
-
-const correct = require('../assets/sounds/correct-answer.mp3');
-const wrong = require('../assets/sounds/wrong-answer.mp3');
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
+import correct from '../assets/sounds/correct-answer.mp3';
+// @ts-ignore
+import wrong from '../assets/sounds/wrong-answer.mp3';
 
 const playAnswerSound = (status: boolean) => {
   if (status) {
     return new Howl({
-      src: correct.default,
+      src: correct,
     });
   }
 
   return new Howl({
-    src: wrong.default,
+    src: wrong,
   });
 };
 

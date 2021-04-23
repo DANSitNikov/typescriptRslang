@@ -1,13 +1,12 @@
 import React, { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import style from './timer.module.scss';
 
-const Timer = ({ value }) => {
-  const timer = useRef();
+const Timer: React.FC<{value: number}> = ({ value }) => {
+  const timer = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const secondDeg = (360 / 60) * value;
-    timer.current.style.transform = `rotate(-${secondDeg}deg)`;
+    timer.current!.style.transform = `rotate(-${secondDeg}deg)`;
   }, [value]);
 
   return (
@@ -16,10 +15,6 @@ const Timer = ({ value }) => {
       <span>{value}</span>
     </div>
   );
-};
-
-Timer.propTypes = {
-  value: PropTypes.number.isRequired,
 };
 
 export default Timer;

@@ -2,13 +2,14 @@ import React from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../reducers/userReducer';
+import { logout, User } from '../../reducers/userReducer';
 import style from './menu.module.scss';
 import { setHardWords, setLearnedWords, setRemoveWords } from '../../actions/dictionaryAction';
+import { GlobalState } from '../../reducers/rootReducer';
 
 const Menu = () => {
-  const isAuth = useSelector((state) => state.user.isAuth);
-  const user = useSelector((state) => state.user.currentUser);
+  const isAuth = useSelector((state: GlobalState): boolean => state.user.isAuth);
+  const user = useSelector((state: GlobalState): User => state.user.currentUser);
   const dispatch = useDispatch();
 
   return (

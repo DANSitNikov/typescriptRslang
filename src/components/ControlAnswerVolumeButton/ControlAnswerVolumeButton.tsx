@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import style from './controlAnswerVolumeButton.module.scss';
 
-const ControlAnswerVolumeButton = (props) => {
+interface Props {
+  soundStatus: boolean
+  setSoundStatus: (param: boolean) => void
+}
+
+const ControlAnswerVolumeButton: React.FC<Props> = (props) => {
   const { soundStatus, setSoundStatus } = props;
 
   return (

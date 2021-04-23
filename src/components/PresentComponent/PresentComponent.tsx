@@ -1,20 +1,32 @@
 import React, { useEffect, useRef } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import style from './presentComponent.module.scss';
+import { Words } from '../../utilities/checkDeletedAndDifficultWords';
 
-const PresentComponent = (props) => {
+interface Props {
+  words: Array<Words>
+  setStartGame: (param: boolean) => void
+  gameName: string
+  gameDescription: string
+  gameRules: string
+  gameOpportunityOne: string
+  gameOpportunityTwo: string
+  back: string
+  fakeWords: Array<Words>
+}
+
+const PresentComponent: React.FC<Props> = (props) => {
   const {
     words, setStartGame, gameName,
     gameDescription, gameRules, gameOpportunityOne,
     gameOpportunityTwo, back, fakeWords,
   } = props;
-  const gameBack = useRef();
+  const gameBack = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    gameBack.current.style.background = `url('${back}')`;
-    gameBack.current.style.backgroundSize = 'cover';
-    gameBack.current.style.backgroundPosition = 'bottom';
+    gameBack.current!.style.background = `url('${back}')`;
+    gameBack.current!.style.backgroundSize = 'cover';
+    gameBack.current!.style.backgroundPosition = 'bottom';
   }, []);
 
   return (
@@ -43,18 +55,6 @@ const PresentComponent = (props) => {
         }
     </div>
   );
-};
-
-PresentComponent.propTypes = {
-  words: PropTypes.arrayOf(PropTypes.object).isRequired,
-  fakeWords: PropTypes.arrayOf(PropTypes.object).isRequired,
-  setStartGame: PropTypes.func.isRequired,
-  gameName: PropTypes.string.isRequired,
-  gameDescription: PropTypes.string.isRequired,
-  gameRules: PropTypes.string.isRequired,
-  gameOpportunityOne: PropTypes.string.isRequired,
-  gameOpportunityTwo: PropTypes.string.isRequired,
-  back: PropTypes.string.isRequired,
 };
 
 export default PresentComponent;

@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import Pagination from 'react-bootstrap/Pagination';
-import PropTypes from 'prop-types';
 import style from './pagination.module.scss';
 
-const PaginationInTextBook = (props) => {
+interface Props {
+  setPageNumber: (i: number) => void
+  length: number
+}
+
+const PaginationInTextBook: React.FC<Props> = (props) => {
   const { setPageNumber, length } = props;
   const [item, setItem] = useState(0);
-  const [pages, setPages] = useState([]);
+  const [pages, setPages] = useState<Array<JSX.Element>>([]);
 
   useEffect(() => {
-    setPages(() => {
+    setPages((): Array<JSX.Element> => {
       const highPage = (item + 1) * 5;
       const lowPage = highPage - 4;
       const paginationItems = [];
@@ -34,7 +38,7 @@ const PaginationInTextBook = (props) => {
   }, [item, length]);
 
   return (
-    <Pagination size="md" className={style.pagination}>
+    <Pagination className={style.pagination}>
       <Pagination.First onClick={() => setItem(0)} />
       <Pagination.Prev disabled={!item} onClick={() => setItem(item - 1)} />
 
@@ -44,11 +48,6 @@ const PaginationInTextBook = (props) => {
       <Pagination.Last onClick={() => setItem(5)} />
     </Pagination>
   );
-};
-
-PaginationInTextBook.propTypes = {
-  setPageNumber: PropTypes.func.isRequired,
-  length: PropTypes.number.isRequired,
 };
 
 export default PaginationInTextBook;

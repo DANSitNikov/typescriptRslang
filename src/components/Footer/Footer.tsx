@@ -4,15 +4,15 @@ import style from './footer.module.scss';
 import src from '../../assets/images/rsschool/rs_school_js.svg';
 import { getShowFooterStatus } from '../../selectors/selectors';
 
-const Footer = () => {
+const Footer: React.FC = () => {
   const footerDisplayStatus = useSelector(getShowFooterStatus);
-  const footer = useRef();
+  const footer = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!footerDisplayStatus) {
-      footer.current.style.display = 'none';
+      footer.current!.style.display = 'none';
     } else {
-      footer.current.style.display = 'block';
+      footer.current!.style.display = 'block';
     }
   }, [footerDisplayStatus]);
 

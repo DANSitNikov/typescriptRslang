@@ -58,7 +58,7 @@
             <mxPoint x="530" y="510" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="-CJGJMhbpOC7MlB_--XY-15" value="Структура каждой папки: index.js, component.scss, component.jsx. Больше никаких файлов. Допускается вкладывать в папку КАЖДОГО ОСНОВНОГО КОМПОНЕНТА другие компоненты ТОЛЬКО если они используются в этом компоненте и нигде больше." style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="-CJGJMhbpOC7MlB_--XY-15" value="Структура каждой папки: index.ts, component.scss, component.jsx. Больше никаких файлов. Допускается вкладывать в папку КАЖДОГО ОСНОВНОГО КОМПОНЕНТА другие компоненты ТОЛЬКО если они используются в этом компоненте и нигде больше." style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="435" y="560" width="190" height="160" as="geometry" />
         </mxCell>
         <mxCell id="-CJGJMhbpOC7MlB_--XY-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="-CJGJMhbpOC7MlB_--XY-15" target="-CJGJMhbpOC7MlB_--XY-15">
@@ -70,7 +70,7 @@
             <mxPoint x="450" y="380" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="-CJGJMhbpOC7MlB_--XY-19" value="Здесь лежат только компоненты, которые переиспользуются много раз, а также header и footer. Структура каждого компонента - index.js, componentt.scss, component.jsx." style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="-CJGJMhbpOC7MlB_--XY-19" value="Здесь лежат только компоненты, которые переиспользуются много раз, а также header и footer. Структура каждого компонента - index.ts, componentt.scss, component.jsx." style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="240" y="400" width="140" height="150" as="geometry" />
         </mxCell>
         <mxCell id="-CJGJMhbpOC7MlB_--XY-20" value="" style="endArrow=none;dashed=1;html=1;" edge="1" parent="1">
