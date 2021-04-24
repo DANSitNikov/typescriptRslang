@@ -4,12 +4,7 @@ import { Howl } from 'howler';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import style from './TextbookWordComponent.module.scss';
-import addNewLearnedWords, {
-  addNewHardWord,
-  addNewRemovedWord,
-  deleteFromHardWords,
-  deleteFromRemovedWords,
-} from '../../../actions/dictionaryAction';
+import dictionaryActions from '../../../actions/dictionaryAction';
 import checkDeletedAndDifficultWords from '../../../utilities/checkDeletedAndDifficultWords';
 import {
   getButtonsVisibility,
@@ -54,19 +49,19 @@ const TextbookWordComponent = (props) => {
         }
       }
 
-      dispatch(deleteFromHardWords(array));
+      dispatch(dictionaryActions.deleteFromHardWords(array));
     }
     if (checkDeletedAndDifficultWords(deletedWords, word)) {
-      dispatch(addNewRemovedWord(word));
+      dispatch(dictionaryActions.addNewRemovedWord(word));
     }
   };
 
   const onHardBtnClick = () => {
     if (checkDeletedAndDifficultWords(difficultWords, word)) {
-      dispatch(addNewHardWord(word));
+      dispatch(dictionaryActions.addNewHardWord(word));
       const setWord = checkLearnedWords(learnedWords, [word]);
       if (setWord.length > 0) {
-        dispatch(addNewLearnedWords([word]));
+        dispatch(dictionaryActions.addNewLearnedWords([word]));
       }
     }
   };
@@ -81,7 +76,7 @@ const TextbookWordComponent = (props) => {
         }
       }
 
-      dispatch(deleteFromHardWords(array));
+      dispatch(dictionaryActions.deleteFromHardWords(array));
     } else if (type === 'deletedWord') {
       const array = [];
 
@@ -91,7 +86,7 @@ const TextbookWordComponent = (props) => {
         }
       }
 
-      dispatch(deleteFromRemovedWords(array));
+      dispatch(dictionaryActions.deleteFromRemovedWords(array));
     }
   };
 

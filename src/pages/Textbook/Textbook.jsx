@@ -8,13 +8,13 @@ import { Button, ListGroup } from 'react-bootstrap';
 import style from './Textbook.module.scss';
 import TextbookPageComponent from './TextbookPageComponent';
 import Dictionary from './Dictionary';
-import { setHardWords, setLearnedWords, setRemoveWords } from '../../actions/dictionaryAction';
+import dictionaryActions from '../../actions/dictionaryAction';
 import {
   getDeletedWords, getDifficultWords, getLearnedWords, getUserAuth, getUserId,
 } from '../../selectors/selectors';
 import { setUserData } from '../../actions/userActions';
-import { setGameFromTextbookStatus } from '../../actions/mniGameAction';
-import toggleShowStatus from '../../actions/footerAction';
+import miniGamesActions from '../../actions/mniGameAction';
+import footerActions from '../../actions/footerAction';
 import Preloader from '../../components/Preloader/Preloader';
 import TextbookSettings from './Settings';
 
@@ -30,21 +30,21 @@ const Textbook = () => {
   const pagesArray = [1, 2, 3, 4, 5, 6];
 
   useEffect(async () => {
-    dispatch(setGameFromTextbookStatus(true));
+    dispatch(miniGamesActions.setGameFromTextbookStatus(true));
     if (difficultWords.length === 0 && deletedWords.length === 0
       && learnedWords.length === 0 && isAuth) {
       if (userId) {
         await firebase.database().ref(`/users/${userId}/deleted`).once('value')
           .then((snapshot) => snapshot.val())
-          .then((res) => dispatch(setRemoveWords(res || [])));
+          .then((res) => dispatch(dictionaryActions.setRemoveWords(res || [])));
 
         await firebase.database().ref(`/users/${userId}/hard`).once('value')
           .then((snapshot) => snapshot.val())
-          .then((res) => dispatch(setHardWords(res || [])));
+          .then((res) => dispatch(dictionaryActions.setHardWords(res || [])));
 
         await firebase.database().ref(`/users/${userId}/learned`).once('value')
           .then((snapshot) => snapshot.val())
-          .then((res) => dispatch(setLearnedWords(res || [])));
+          .then((res) => dispatch(dictionaryActions.setLearnedWords(res || [])));
 
         setIsFetching(true);
       }
@@ -67,7 +67,7 @@ const Textbook = () => {
   }, [deletedWords]);
 
   useEffect(() => {
-    dispatch(toggleShowStatus(true));
+    dispatch(footerActions.toggleShowStatus(true));
   }, []);
 
   const showMenu = () => {

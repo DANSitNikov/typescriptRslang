@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, User } from '../../reducers/userReducer';
 import style from './menu.module.scss';
-import { setHardWords, setLearnedWords, setRemoveWords } from '../../actions/dictionaryAction';
+import dictionaryActions from '../../actions/dictionaryAction';
 import { GlobalState } from '../../reducers/rootReducer';
 
 const Menu = () => {
@@ -43,9 +43,9 @@ const Menu = () => {
                       to="/"
                       onClick={() => {
                         dispatch(logout());
-                        dispatch(setHardWords([]));
-                        dispatch(setRemoveWords([]));
-                        dispatch(setLearnedWords([]));
+                        dispatch(dictionaryActions.setHardWords([]));
+                        dispatch(dictionaryActions.setRemoveWords([]));
+                        dispatch(dictionaryActions.setLearnedWords([]));
                       }}
                     >
                       Выйти

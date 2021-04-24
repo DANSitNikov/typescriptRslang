@@ -6,8 +6,8 @@ import gallowsSrc from '../../assets/backgrounds/bg-gallows-game.svg';
 import audioSrc from '../../assets/backgrounds/bg-audiocall-game.svg';
 import style from './miniGames.module.scss';
 import ChooseLevel from './ChooseLevel/ChooseLevel';
-import toggleShowStatus from '../../actions/footerAction';
-import { setGameFromTextbookStatus } from '../../actions/mniGameAction';
+import footerActions from '../../actions/footerAction';
+import miniGamesActions from '../../actions/mniGameAction';
 
 const MiniGames = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -30,9 +30,9 @@ const MiniGames = () => {
         setShowPopup(false);
       }
     };
-    dispatch(toggleShowStatus(true));
+    dispatch(footerActions.toggleShowStatus(true));
     document.addEventListener('keydown', keyDownEvent);
-    dispatch(setGameFromTextbookStatus(false));
+    dispatch(miniGamesActions.setGameFromTextbookStatus(false));
     return () => {
       document.removeEventListener('keydown', keyDownEvent);
       document.body.style.overflow = 'auto';

@@ -1,12 +1,6 @@
-import {
-  SET_GAME_FROM_DICTIONARY,
-  SET_GAME_FROM_TEXTBOOK,
-  SET_GROUP_NUMBER, SET_LEVEL,
-  SET_PAGE_NUMBER,
-  SET_WORDS_FROM_DICTIONARY,
-  SET_WORDS_FROM_TEXTBOOK,
-} from '../actions/mniGameAction';
+import miniGamesActions from '../actions/mniGameAction';
 import { Words } from '../utilities/checkDeletedAndDifficultWords';
+import { ActionsType } from './rootReducer';
 
 const initialState = {
   level: null as null | number,
@@ -19,40 +13,41 @@ const initialState = {
 };
 
 type InitialState = typeof initialState;
+type ActionType = ActionsType<typeof miniGamesActions>;
 
-const miniGameReducer = (state = initialState, action: any): InitialState => {
+const miniGameReducer = (state = initialState, action: ActionType): InitialState => {
   switch (action.type) {
-    case SET_LEVEL:
+    case 'SET_LEVEL':
       return {
         ...state,
         level: action.level,
       };
-    case SET_PAGE_NUMBER:
+    case 'SET_PAGE_NUMBER':
       return {
         ...state,
         pageNumber: action.page,
       };
-    case SET_GROUP_NUMBER:
+    case 'SET_GROUP_NUMBER':
       return {
         ...state,
         groupNumber: action.group,
       };
-    case SET_GAME_FROM_TEXTBOOK:
+    case 'SET_GAME_FROM_TEXTBOOK':
       return {
         ...state,
         fromTextbook: action.status,
       };
-    case SET_WORDS_FROM_DICTIONARY:
+    case 'SET_WORDS_FROM_DICTIONARY':
       return {
         ...state,
         wordsFromDictionary: [...action.array],
       };
-    case SET_GAME_FROM_DICTIONARY:
+    case 'SET_GAME_FROM_DICTIONARY':
       return {
         ...state,
         fromDictionary: action.status,
       };
-    case SET_WORDS_FROM_TEXTBOOK:
+    case 'SET_WORDS_FROM_TEXTBOOK':
       return {
         ...state,
         wordsFromTextbook: [...action.array],

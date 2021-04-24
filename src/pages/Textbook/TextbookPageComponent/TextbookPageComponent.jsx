@@ -6,12 +6,7 @@ import checkDifficultWords from '../../../utilities/checkDeletedAndDifficultWord
 import { getDeletedWords, getDifficultWords, getUserAuth } from '../../../selectors/selectors';
 import Pagination from '../../../components/Pagination/Pagination';
 import Games from '../Games/Games';
-import {
-  setGameFromDictionaryStatus,
-  setGameGroup,
-  setGamePage,
-  setWordsFromTextbook,
-} from '../../../actions/mniGameAction';
+import miniGamesActions from '../../../actions/mniGameAction';
 import Preloader from '../../../components/Preloader/Preloader';
 
 const TextbookPageComponent = (props) => {
@@ -26,9 +21,9 @@ const TextbookPageComponent = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setGamePage(pageNumber - 1));
-    dispatch(setGameGroup(dataProps.groupNumber));
-    dispatch(setGameFromDictionaryStatus(false));
+    dispatch(miniGamesActions.setGamePage(pageNumber - 1));
+    dispatch(miniGamesActions.setGameGroup(dataProps.groupNumber));
+    dispatch(miniGamesActions.setGameFromDictionaryStatus(false));
     try {
       fetch(`https://newrslangapi.herokuapp.com/words/?group=${dataProps.groupNumber}&page=${pageNumber - 1}`)
         .then((response) => response.json())
@@ -46,7 +41,7 @@ const TextbookPageComponent = (props) => {
       } else {
         setIsThereWords(true);
       }
-      dispatch(setWordsFromTextbook(setWords));
+      dispatch(miniGamesActions.setWordsFromTextbook(setWords));
     }
   }, [deletedWords, pageNumber, dataProps.groupNumber, wordsData]);
 

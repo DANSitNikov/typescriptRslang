@@ -43,22 +43,6 @@ const usersReducer = (state = initialState, action: any): InitialState => {
         currentUser: {},
         isAuth: false,
       };
-    // case SET_WORDS_COLLECTION:
-    //   return {
-    //     ...state,
-    //     deletedWords: action.payload.deleted,
-    //     hardWords: action.payload.hard,
-    //   };
-    // case SET_DELETED_COLLECTION:
-    //   return {
-    //     ...state,
-    //     deletedWords: action.payload.deleted,
-    //   };
-    // case SET_HARD_COLLECTION:
-    //   return {
-    //     ...state,
-    //     hardWords: action.payload.hard,
-    //   };
     default:
       return state;
   }
@@ -70,27 +54,5 @@ export const setUser = (user: User): SetUserType => ({
 });
 
 export const logout = () => ({ type: LOGOUT });
-
-// export const setWordsCollection = (deleted, hard) => ({
-//   type: SET_WORDS_COLLECTION,
-//   payload: {
-//     deleted,
-//     hard,
-//   },
-// });
-//
-// export const setDeletedCollection = (deleted) => ({
-//   type: SET_DELETED_COLLECTION,
-//   payload: {
-//     deleted,
-//   },
-// });
-//
-// export const setHardCollection = (hard) => ({
-//   type: SET_HARD_COLLECTION,
-//   payload: {
-//     hard,
-//   },
-// });
 
 export default usersReducer;

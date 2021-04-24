@@ -5,8 +5,8 @@ import style from './DictionaryPageComponent.module.scss';
 import TextbookWordComponent from '../../TextbookWordComponent';
 import checkDifficultWords from '../../../../utilities/checkDeletedAndDifficultWords';
 import Pagination from '../../../../components/Pagination';
-import { setGameFromDictionaryStatus, setGameGroup, setWordsFromDictionary } from '../../../../actions/mniGameAction';
-import { setType } from '../../../../actions/dictionaryAction';
+import miniGamesActions from '../../../../actions/mniGameAction';
+import dictionaryActions from '../../../../actions/dictionaryAction';
 
 const DictionaryPageComponent = (props) => {
   const {
@@ -16,13 +16,13 @@ const DictionaryPageComponent = (props) => {
   const [isThereWords, setIsThereWords] = useState(true);
 
   useEffect(() => {
-    dispatch(setGameFromDictionaryStatus(true));
+    dispatch(miniGamesActions.setGameFromDictionaryStatus(true));
   }, []);
 
   useEffect(() => {
-    dispatch(setWordsFromDictionary(words));
-    dispatch(setGameGroup(topic - 1));
-    dispatch(setType(type));
+    dispatch(miniGamesActions.setWordsFromDictionary(words));
+    dispatch(miniGamesActions.setGameGroup(topic - 1));
+    dispatch(dictionaryActions.setType(type));
     if (words.length === 0) {
       setIsThereWords(false);
     } else {

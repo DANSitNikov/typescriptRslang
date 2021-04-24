@@ -6,7 +6,7 @@ import style from './gameResultWindow.module.scss';
 import backImage from '../../assets/backgrounds/bg-result.svg';
 import { getGameFromTextbookStatus, getLearnedWords, getUserId } from '../../selectors/selectors';
 import checkLearnedWords from '../../utilities/checkLearnedWords';
-import addNewLearnedWords from '../../actions/dictionaryAction';
+import dictionaryActions from '../../actions/dictionaryAction';
 import { setUserData } from '../../actions/userActions';
 import { Words } from '../../utilities/checkDeletedAndDifficultWords';
 
@@ -28,7 +28,7 @@ const GameResultWindow: React.FC<Props> = React.memo((props) => {
     gameWindow.current!.style.background = `url('${backImage}')`;
     const setWord = checkLearnedWords(learnedWords, words);
     if (textbookStatus) {
-      dispatch(addNewLearnedWords(setWord));
+      dispatch(dictionaryActions.addNewLearnedWords(setWord));
       setUserData(userId, [...learnedWords, ...setWord], 'learned');
     }
   }, []);
