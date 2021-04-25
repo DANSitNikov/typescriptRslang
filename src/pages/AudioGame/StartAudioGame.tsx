@@ -4,7 +4,7 @@ import AudioGame from './actuallyAudioGame/AudioGame';
 import { getFakeWords, getWords } from '../../utilities/getData';
 import PresentComponent from '../../components/PresentComponent';
 import backImage from '../../assets/backgrounds/bg-audiocall-game.svg';
-import toggleShowStatus from '../../actions/footerAction';
+import footerActions from '../../actions/footerAction';
 import {
   getGameFromDictStatus,
   getGameFromTextbookStatus,
@@ -12,11 +12,12 @@ import {
   getGamePageNumber, getGameWordsFromDict, getGameWordsFromTextbook,
   getMiniGameLevel,
 } from '../../selectors/selectors';
+import { Words } from '../../utilities/checkDeletedAndDifficultWords';
 
-const StartAudioGame = () => {
-  const [words, setWords] = useState([]);
-  const [fakeWords, setFakeWords] = useState([]);
-  const [startGame, setStartGame] = useState(false);
+const StartAudioGame: React.FC = () => {
+  const [words, setWords] = useState<Array<Words>>([]);
+  const [fakeWords, setFakeWords] = useState<Array<Words>>([]);
+  const [startGame, setStartGame] = useState<boolean>(false);
   const level = useSelector(getMiniGameLevel);
   const textbookStatus = useSelector(getGameFromTextbookStatus);
   const pageNumber = useSelector(getGamePageNumber);
@@ -27,31 +28,35 @@ const StartAudioGame = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(toggleShowStatus(false));
+    dispatch(footerActions.toggleShowStatus(false));
   }, []);
 
-  useEffect(async () => {
-    let page;
-    let currentLevel;
-    let data;
-    if (textbookStatus) {
-      page = pageNumber;
-      currentLevel = groupNumber + 1;
-      if (dictionaryStatus) {
-        data = wordsFromDictionary;
-      } else {
-        data = wordsFromTextbook;
-      }
-    } else {
-      page = Math.floor(Math.random() * 30);
-      currentLevel = level;
-      data = await getWords(currentLevel, page, 1);
-    }
+  useEffect(() => {
+    (
+      async () => {
+        let page;
+        let currentLevel;
+        let data;
+        if (textbookStatus) {
+          page = pageNumber;
+          if (groupNumber) currentLevel = groupNumber + 1;
+          if (dictionaryStatus) {
+            data = wordsFromDictionary;
+          } else {
+            data = wordsFromTextbook;
+          }
+        } else {
+          page = Math.floor(Math.random() * 30);
+          currentLevel = level;
+          data = await getWords(currentLevel, page, 1);
+        }
 
-    setWords(data.flat().sort(() => Math.random() - 0.5));
-    const fake = await getFakeWords(currentLevel, page, 4);
-    setFakeWords(fake.flat().sort(() => Math.random() - 0.5));
-    dispatch(toggleShowStatus(false));
+        setWords(data!.flat().sort(() => Math.random() - 0.5));
+        const fake = await getFakeWords(currentLevel, page, 4);
+        setFakeWords(fake.flat().sort(() => Math.random() - 0.5));
+        dispatch(footerActions.toggleShowStatus(false));
+      }
+    )();
   }, []);
 
   return (

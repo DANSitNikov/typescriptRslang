@@ -1,20 +1,35 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Howl } from 'howler';
-import PropTypes from 'prop-types';
 import style from './activeStage.module.scss';
 import playAnswerSound from '../../../utilities/audioPlayer';
+import { Words } from '../../../utilities/checkDeletedAndDifficultWords';
 
-const ActiveStage = React.memo((props) => {
+interface Props {
+  word: Words
+  fakeWords: Array<Words>
+  correct: string
+  setCorrectOrNot: (str: string) => void
+  setNextBtnStatus: (bool: boolean) => void
+  setCorrectAnswers: (arr: Array<Words>) => void
+  setWrongAnswers: (arr: Array<Words>) => void
+  wrongAnswers: Array<Words>
+  correctAnswers: Array<Words>
+  setActiveStage: (num: number) => void
+  activeStage: number
+  soundStatus: boolean
+}
+
+const ActiveStage: React.FC<Props> = React.memo((props) => {
   const {
     word, fakeWords, correct, setCorrectOrNot,
     setNextBtnStatus, setCorrectAnswers, setWrongAnswers,
     wrongAnswers, correctAnswers, setActiveStage,
     activeStage, soundStatus,
   } = props;
-  const [randomNumber, setRandomNumber] = useState();
-  const textEx = useRef();
-  const correctAnswerRef = useRef();
+  const [randomNumber, setRandomNumber] = useState<number>();
+  const textEx = useRef<HTMLParagraphElement | null>(null);
+  const correctAnswerRef = useRef<HTMLButtonElement | null>(null);
   const wordSound = new Howl({
     src: `https://newrslangapi.herokuapp.com/${word.audio}`,
   });
@@ -31,12 +46,12 @@ const ActiveStage = React.memo((props) => {
 
   useEffect(() => {
     if (correct !== 'default') {
-      textEx.current.innerHTML = word.textExample;
+      if (textEx.current) textEx.current.innerHTML = word.textExample;
     }
   }, [correct]);
 
   useEffect(() => {
-    const keyDownHandler = (event) => {
+    const keyDownHandler = (event: KeyboardEvent) => {
       if (correct === 'right' || correct === 'wrong') {
         if (event.key === 'Enter') {
           setActiveStage(activeStage + 1);
@@ -44,7 +59,7 @@ const ActiveStage = React.memo((props) => {
           setCorrectOrNot('default');
         }
       } else if (event.key === '1' || event.key === '2' || event.key === '3' || event.key === '4' || event.key === '5') {
-        if ((event.key - 1) === randomNumber) {
+        if ((Number(event.key) - 1) === randomNumber) {
           setCorrectOrNot('right');
           setNextBtnStatus(true);
           setCorrectAnswers([...correctAnswers, word]);
@@ -74,6 +89,9 @@ const ActiveStage = React.memo((props) => {
         <Button
           key={word.word}
           ref={correctAnswerRef}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          className={(correct !== 'default' ? style.rightAnswer : null)}
           onClick={() => {
             setCorrectOrNot('right');
             setNextBtnStatus(true);
@@ -82,7 +100,6 @@ const ActiveStage = React.memo((props) => {
           }}
           variant="outline-light"
           disabled={(correct !== 'default')}
-          className={(correct !== 'default' ? style.rightAnswer : null)}
         >
           {i + 1}
           .
@@ -101,6 +118,8 @@ const ActiveStage = React.memo((props) => {
         }}
         variant="outline-light"
         disabled={(correct !== 'default')}
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         className={(correct !== 'default' ? style.wrongAnswer : null)}
       >
         {i + 1}
@@ -203,20 +222,5 @@ const ActiveStage = React.memo((props) => {
     </div>
   );
 });
-
-ActiveStage.propTypes = {
-  word: PropTypes.objectOf(PropTypes.any).isRequired,
-  fakeWords: PropTypes.arrayOf(PropTypes.object).isRequired,
-  correct: PropTypes.string.isRequired,
-  setCorrectOrNot: PropTypes.func.isRequired,
-  setNextBtnStatus: PropTypes.func.isRequired,
-  setCorrectAnswers: PropTypes.func.isRequired,
-  setWrongAnswers: PropTypes.func.isRequired,
-  wrongAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  correctAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  setActiveStage: PropTypes.func.isRequired,
-  activeStage: PropTypes.number.isRequired,
-  soundStatus: PropTypes.bool.isRequired,
-};
 
 export default ActiveStage;

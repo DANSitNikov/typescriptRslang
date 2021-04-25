@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import style from './GameSavanna.module.scss';
 import GameResultWindow from '../../../components/GameResultWindow';
 import playAnswerSound from '../../../utilities/audioPlayer';
@@ -8,26 +7,32 @@ import ResultProgressBar from '../../../components/ResultPregressBar';
 import FullScreenButtons from '../../../components/FullScreenButton/FullScreenButtons';
 import ControlAnswerVolumeButton from '../../../components/ControlAnswerVolumeButton';
 import HealthBar from '../../../components/HealthBar';
+import { Words } from '../../../utilities/checkDeletedAndDifficultWords';
 
-const GameSavanna = (props) => {
+interface Props {
+  words: Array<Words>
+  fakeWords: Array<Words>
+}
+
+const GameSavanna: React.FC<Props> = (props) => {
   const { words, fakeWords } = props;
-  const [wordCounter, setWordCounter] = useState(0);
-  const [backgroundPosition, setBackgroundPosition] = useState(100);
-  const [currentWord, setCurrentWord] = useState(words[wordCounter]);
-  const [currentWordAnswers, setCurrentWordAnswers] = useState([]);
-  const [health, setHealth] = useState([1, 2, 3, 4, 5]);
-  const [answerBtnsState, setAnswerBtnsState] = useState(true);
-  const [isGameFinished, setIsGameFinished] = useState(false);
-  const [correctAnswers, setCorrectAnswers] = useState([]);
-  const [wrongAnswers, setWrongAnswers] = useState([]);
-  const [fullScreenStatus, setFullScreenStatus] = useState(false);
-  const [soundStatus, setSoundStatus] = useState(true);
+  const [wordCounter, setWordCounter] = useState<number>(0);
+  const [backgroundPosition, setBackgroundPosition] = useState<number>(100);
+  const [currentWord, setCurrentWord] = useState<Words>(words[wordCounter]);
+  const [currentWordAnswers, setCurrentWordAnswers] = useState<Array<Words>>([]);
+  const [health, setHealth] = useState<Array<number>>([1, 2, 3, 4, 5]);
+  const [answerBtnsState, setAnswerBtnsState] = useState<boolean>(true);
+  const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
+  const [correctAnswers, setCorrectAnswers] = useState<Array<Words>>([]);
+  const [wrongAnswers, setWrongAnswers] = useState<Array<Words>>([]);
+  const [fullScreenStatus, setFullScreenStatus] = useState<boolean>(false);
+  const [soundStatus, setSoundStatus] = useState<boolean>(true);
   const [value] = useState(5);
-  const failTimerRef = useRef();
-  const currentWordRef = useRef();
-  const gameWindow = useRef();
-  const header = useRef();
-  const headerOpacityTimerRef = useRef();
+  const failTimerRef = useRef<any | null>(null);
+  const currentWordRef = useRef<HTMLDivElement | null>(null);
+  const gameWindow = useRef<HTMLDivElement | null>(null);
+  const header = useRef<HTMLHeadingElement | null>(null);
+  const headerOpacityTimerRef = useRef<any | null>(null);
 
   const chooseWordsForAnswers = () => {
     const answers = [currentWord];
@@ -55,9 +60,9 @@ const GameSavanna = (props) => {
     if (isGameFinished) {
       return;
     }
-    chooseWordsForAnswers(words);
+    chooseWordsForAnswers();
     setTimeout(() => {
-      currentWordRef.current.className = `${style.game_current_word} ${style.game_current_word_active}`;
+      currentWordRef.current!.className = `${style.game_current_word} ${style.game_current_word_active}`;
       setAnswerBtnsState(true);
     }, 100);
   }, [currentWord]);
@@ -73,14 +78,14 @@ const GameSavanna = (props) => {
     }
   };
 
-  const onAnswerClickHandler = (word) => {
+  const onAnswerClickHandler = (word: Words) => {
     if (!answerBtnsState) {
       return;
     }
 
     if (word.wordTranslate === currentWord.wordTranslate) {
       if (wordCounter < words.length) {
-        currentWordRef.current.className = `${style.game_current_word}`;
+        currentWordRef.current!.className = `${style.game_current_word}`;
         setWordCounter(wordCounter + 1);
         onCorrectAnswerClick();
         if (soundStatus) playAnswerSound(true).play();
@@ -90,7 +95,7 @@ const GameSavanna = (props) => {
       }
     } else {
       setHealth(health.slice(0, -1));
-      currentWordRef.current.className = `${style.game_current_word}`;
+      currentWordRef.current!.className = `${style.game_current_word}`;
       setWordCounter(wordCounter + 1);
       if (soundStatus) playAnswerSound(false).play();
       setWrongAnswers([...wrongAnswers, currentWord]);
@@ -110,19 +115,21 @@ const GameSavanna = (props) => {
       return;
     }
 
-    header.current.style.opacity = '0.2';
-    headerOpacityTimerRef.current = setTimeout(() => {
-      header.current.style.opacity = '1';
-    }, 1700);
+    header.current!.style.opacity = '0.2';
+    if (headerOpacityTimerRef.current) {
+      headerOpacityTimerRef.current = setTimeout(() => {
+        header.current!.style.opacity = '1';
+      }, 1700);
+    }
 
     failTimerRef.current = setTimeout(() => {
-      currentWordRef.current.className = `${style.game_current_word} ${style.game_current_word_fail}`;
+      currentWordRef.current!.className = `${style.game_current_word} ${style.game_current_word_fail}`;
       setHealth(health.slice(0, -1));
       if (soundStatus) playAnswerSound(false).play();
       setAnswerBtnsState(false);
       setWrongAnswers([...wrongAnswers, currentWord]);
       setTimeout(() => {
-        currentWordRef.current.className = `${style.game_current_word}`;
+        currentWordRef.current!.className = `${style.game_current_word}`;
         setWordCounter(wordCounter + 1);
       }, 500);
     }, 4200);
@@ -135,7 +142,7 @@ const GameSavanna = (props) => {
 
   useEffect(() => {
     if (!isGameFinished) {
-      const keyDownHandler = (event) => {
+      const keyDownHandler = (event: KeyboardEvent) => {
         switch (event.key) {
           case '1':
             onAnswerClickHandler(currentWordAnswers[0]);
@@ -173,7 +180,7 @@ const GameSavanna = (props) => {
       document.exitFullscreen();
       setFullScreenStatus(false);
     } else {
-      gameWindow.current.requestFullscreen().catch((e) => console.log(e));
+      gameWindow.current!.requestFullscreen().catch((e) => console.log(e));
       setFullScreenStatus(true);
     }
   };
@@ -235,11 +242,6 @@ const GameSavanna = (props) => {
         </div>
       )
   );
-};
-
-GameSavanna.propTypes = {
-  words: PropTypes.arrayOf(PropTypes.object).isRequired,
-  fakeWords: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default GameSavanna;

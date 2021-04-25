@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import ActiveStage from '../activeStage/ActiveStage';
 import style from './audioGame.module.scss';
 import GameResultWindow from '../../../components/GameResultWindow';
@@ -9,17 +8,23 @@ import ResultProgressBar from '../../../components/ResultPregressBar';
 import FullScreenButtons from '../../../components/FullScreenButton';
 import backImage from '../../../assets/backgrounds/bg-audiocall-game.svg';
 import ControlAnswerVolumeButton from '../../../components/ControlAnswerVolumeButton';
+import { Words } from '../../../utilities/checkDeletedAndDifficultWords';
 
-const AudioGame = (props) => {
+interface Props {
+  words: Array<Words>
+  fakeWords: Array<Words>
+}
+
+const AudioGame: React.FC<Props> = (props) => {
   const { words, fakeWords } = props;
-  const [activeStage, setActiveStage] = useState(1);
-  const [nextBtnStatus, setNextBtnStatus] = useState(false);
-  const [correct, setCorrectOrNot] = useState('default');
-  const [correctAnswers, setCorrectAnswers] = useState([]);
-  const [wrongAnswers, setWrongAnswers] = useState([]);
-  const [value] = useState(5);
-  const [fullScreenStatus, setFullScreenStatus] = useState(false);
-  const [soundStatus, setSoundStatus] = useState(true);
+  const [activeStage, setActiveStage] = useState<number>(1);
+  const [nextBtnStatus, setNextBtnStatus] = useState<boolean>(false);
+  const [correct, setCorrectOrNot] = useState<string>('default');
+  const [correctAnswers, setCorrectAnswers] = useState<Array<Words>>([]);
+  const [wrongAnswers, setWrongAnswers] = useState<Array<Words>>([]);
+  const [value] = useState<number>(5);
+  const [fullScreenStatus, setFullScreenStatus] = useState<boolean>(false);
+  const [soundStatus, setSoundStatus] = useState<boolean>(true);
   const [currentFakeWords] = useState(() => {
     const result = [];
     for (let i = 0; i < 20; i += 1) {
@@ -30,7 +35,7 @@ const AudioGame = (props) => {
     }
     return result;
   });
-  const gameWindow = useRef();
+  const gameWindow = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     document.addEventListener('fullscreenchange', () => {
@@ -38,9 +43,9 @@ const AudioGame = (props) => {
         setFullScreenStatus(false);
       }
     });
-    gameWindow.current.style.background = `url(${backImage})`;
-    gameWindow.current.style.backgroundSize = 'cover';
-    gameWindow.current.style.backgroundPosition = 'bottom';
+    gameWindow.current!.style.background = `url(${backImage})`;
+    gameWindow.current!.style.backgroundSize = 'cover';
+    gameWindow.current!.style.backgroundPosition = 'bottom';
   }, []);
 
   const onFullscreenBtnClick = () => {
@@ -48,7 +53,7 @@ const AudioGame = (props) => {
       document.exitFullscreen();
       setFullScreenStatus(false);
     } else {
-      gameWindow.current.requestFullscreen().catch((e) => console.log(e));
+      gameWindow.current!.requestFullscreen().catch((e) => console.log(e));
       setFullScreenStatus(true);
     }
   };
@@ -128,11 +133,6 @@ const AudioGame = (props) => {
         </div>
       )
   );
-};
-
-AudioGame.propTypes = {
-  words: PropTypes.arrayOf(PropTypes.object).isRequired,
-  fakeWords: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default AudioGame;

@@ -2,7 +2,14 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import style from './answers.module.scss';
 
-const Answers = (props) => {
+interface Props {
+  word: string
+  checkedLetters: Array<number>
+  correct: boolean
+  wrong: boolean
+}
+
+const Answers: React.FC<Props> = (props) => {
   const {
     word, checkedLetters, correct, wrong,
   } = props;
@@ -49,13 +56,6 @@ const Answers = (props) => {
       {letters}
     </div>
   );
-};
-
-Answers.propTypes = {
-  word: PropTypes.string.isRequired,
-  checkedLetters: PropTypes.arrayOf(PropTypes.number).isRequired,
-  correct: PropTypes.bool.isRequired,
-  wrong: PropTypes.bool.isRequired,
 };
 
 export default Answers;

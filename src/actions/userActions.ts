@@ -2,9 +2,11 @@ import axios from 'axios';
 import firebase from 'firebase/app';
 import 'firebase/database';
 
+import { Dispatch } from 'redux';
 import { setUser } from '../reducers/userReducer';
+import { Words } from '../utilities/checkDeletedAndDifficultWords';
 
-export const registration = async (email, password, name) => {
+export const registration = async (email: string, password: string, name: string) => {
   try {
     await axios.post('https://newrslangapi.herokuapp.com/users', {
       email,
@@ -16,7 +18,7 @@ export const registration = async (email, password, name) => {
   }
 };
 
-export const login = (email, password) => async (dispatch) => {
+export const login = (email: string, password: string) => async (dispatch: Dispatch) => {
   try {
     const response = await axios.post(
       'https://newrslangapi.herokuapp.com/signin',
@@ -32,14 +34,16 @@ export const login = (email, password) => async (dispatch) => {
   }
 };
 
-export const auth = () => async (dispatch) => {
+export const auth = () => async (dispatch: Dispatch) => {
   const response = localStorage.getItem('user');
   if (response) {
     dispatch(setUser(JSON.parse(response)));
   }
 };
 
-export const setUserData = (userId, array, typeOfCollection) => {
+export const setUserData = (
+  userId: string | undefined, array: Array<Words>, typeOfCollection: string,
+) => {
   firebase.database().ref(`users/${userId}/${typeOfCollection}`).set(
     [...array],
   ).catch((err) => console.log(err));

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import style from './chooseLevel.module.scss';
-import setGameLevel from '../../../actions/mniGameAction';
+import miniGamesActions from '../../../actions/mniGameAction';
 
 const ChooseLevel = (props) => {
   const { setShowPopup, link } = props;
@@ -67,7 +67,7 @@ const ChooseLevel = (props) => {
               className={style.level}
               onClick={() => {
                 setActiveLevel(level);
-                dispatch(setGameLevel(level));
+                dispatch(miniGamesActions.setGameLevel(level));
               }}
             >
               {level}

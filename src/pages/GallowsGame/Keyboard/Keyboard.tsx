@@ -1,18 +1,35 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  MouseEventHandler,
+  Ref, RefObject, useEffect, useRef, useState,
+} from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import style from './Keyboard.module.scss';
 import playAnswerSound from '../../../utilities/audioPlayer';
 
-const Keyboard = (props) => {
+interface Props {
+  mistakesCounter: number,
+  word: string,
+  setMistakesCounter: (num: number) => void
+  setCheckedLetters: (arr: Array<number>) => void
+  checkedLetters: Array<number>
+  newGame: boolean
+  setNewGame: (bool: boolean) => void
+  setNextBtnStatus: (bool: boolean) => void
+  setActiveStage: (num: number) => void
+  activeStage: number
+  soundStatus: boolean
+}
+
+const Keyboard: React.FC<Props> = (props) => {
   const {
     mistakesCounter, word, setMistakesCounter,
     setCheckedLetters, checkedLetters, newGame,
     setNewGame, setNextBtnStatus, setActiveStage,
     activeStage, soundStatus,
   } = props;
-  const [disabledButtons, setDisabledButtons] = useState([]);
-  const buttonsRefs = useRef([]);
+  const [disabledButtons, setDisabledButtons] = useState<Array<string>>([]);
+  const buttonsRefs = useRef<Array<RefObject<HTMLButtonElement | null>>>([]);
   const letters = [
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
     'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
@@ -20,10 +37,11 @@ const Keyboard = (props) => {
 
   buttonsRefs.current = letters.map(() => React.createRef());
 
-  const checkLetter = (e) => {
-    const letter = e.target.innerHTML;
-    e.target.disabled = true;
-    setDisabledButtons([...disabledButtons, e.target.innerText]);
+  const checkLetter = (event: React.MouseEvent<HTMLInputElement>): void => {
+    const target = event.target! as HTMLButtonElement;
+    const letter = target.innerHTML;
+    target.disabled = true;
+    setDisabledButtons([...disabledButtons, target.innerText]);
 
     if (word.toLowerCase().includes(letter)) {
       const addToCheck = [];
@@ -47,13 +65,13 @@ const Keyboard = (props) => {
   useEffect(() => {
     let disableKey = false;
 
-    const keyDownHandler = (event) => {
+    const keyDownHandler = (event: KeyboardEvent) => {
       if (letters.some((el) => el === event.key)) {
         disableKey = !!disabledButtons.join('').toLowerCase().match(event.key);
 
         for (let i = 0; i < buttonsRefs.current.length; i += 1) {
-          if (buttonsRefs.current[i].current.innerText.toLowerCase() === event.key) {
-            buttonsRefs.current[i].current.disabled = true;
+          if (buttonsRefs.current[i]!.current!.innerText.toLowerCase() === event.key) {
+            buttonsRefs.current[i]!.current!.disabled = true;
             break;
           }
         }
@@ -105,7 +123,7 @@ const Keyboard = (props) => {
       <div className={style.keyboard}>
         {letters.map((letter, i) => (
           <Button
-            ref={buttonsRefs.current[i]}
+            ref={buttonsRefs.current[i] as Ref<HTMLButtonElement> | null}
             key={letter}
             className={style.keyboard_button}
             onClick={checkLetter}
@@ -118,20 +136,6 @@ const Keyboard = (props) => {
       </div>
     </div>
   );
-};
-
-Keyboard.propTypes = {
-  mistakesCounter: PropTypes.number.isRequired,
-  word: PropTypes.string.isRequired,
-  setMistakesCounter: PropTypes.func.isRequired,
-  setCheckedLetters: PropTypes.func.isRequired,
-  checkedLetters: PropTypes.arrayOf(PropTypes.number).isRequired,
-  newGame: PropTypes.bool.isRequired,
-  setNewGame: PropTypes.func.isRequired,
-  setNextBtnStatus: PropTypes.func.isRequired,
-  setActiveStage: PropTypes.func.isRequired,
-  activeStage: PropTypes.number.isRequired,
-  soundStatus: PropTypes.bool.isRequired,
 };
 
 export default Keyboard;

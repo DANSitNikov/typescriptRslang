@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PresentComponent from '../../components/PresentComponent';
 import Sprint from './actuallySprintGame';
 import backImage from '../../assets/backgrounds/bg-sprint-game.svg';
-import toggleShowStatus from '../../actions/footerAction';
+import footerActions from '../../actions/footerAction';
 import { getWords } from '../../utilities/getData';
 import {
   getGameFromTextbookStatus,
@@ -35,7 +35,7 @@ const StartSprintGame = () => {
 
     const data = await getWords(currentLevel, page, 10);
     setWords(data.flat().sort(() => Math.random() - 0.5));
-    dispatch(toggleShowStatus(false));
+    dispatch(footerActions.toggleShowStatus(false));
   }, []);
 
   return (

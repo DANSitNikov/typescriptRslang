@@ -12,7 +12,7 @@ interface Props {
   gameOpportunityOne: string
   gameOpportunityTwo: string
   back: string
-  fakeWords: Array<Words>
+  fakeWords: Array<Words> | Array<{fake: boolean}>
 }
 
 const PresentComponent: React.FC<Props> = (props) => {

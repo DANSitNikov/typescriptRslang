@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import GallowsGame from './actuallyGallowsGame/GallowsGame';
 import PresentComponent from '../../components/PresentComponent';
 import backImage from '../../assets/backgrounds/bg-gallows-game.svg';
-import toggleShowStatus from '../../actions/footerAction';
+import footerActions from '../../actions/footerAction';
 import {
   getGameFromDictStatus,
   getGameFromTextbookStatus,
@@ -12,10 +12,11 @@ import {
   getMiniGameLevel,
 } from '../../selectors/selectors';
 import { getWords } from '../../utilities/getData';
+import { Words } from '../../utilities/checkDeletedAndDifficultWords';
 
-const StartGallowsGame = () => {
-  const [words, setWords] = useState([]);
-  const [startGame, setStartGame] = useState(false);
+const StartGallowsGame: React.FC = () => {
+  const [words, setWords] = useState<Array<Words>>([]);
+  const [startGame, setStartGame] = useState<boolean>(false);
   const level = useSelector(getMiniGameLevel);
   const textbookStatus = useSelector(getGameFromTextbookStatus);
   const dictionaryStatus = useSelector(getGameFromDictStatus);
@@ -23,34 +24,37 @@ const StartGallowsGame = () => {
   const wordsFromTextbook = useSelector(getGameWordsFromTextbook);
   const dispatch = useDispatch();
 
-  useEffect(async () => {
-    let page;
-    let currentLevel;
-    let data;
-    if (textbookStatus) {
-      if (dictionaryStatus) {
-        data = wordsFromDictionary;
+  useEffect(() => {
+    (async () => {
+      let page;
+      let currentLevel;
+      let data;
+      if (textbookStatus) {
+        if (dictionaryStatus) {
+          data = wordsFromDictionary;
+        } else {
+          data = wordsFromTextbook;
+        }
       } else {
-        data = wordsFromTextbook;
+        page = Math.floor(Math.random() * 30);
+        currentLevel = level;
+        data = await getWords(currentLevel, page, 1);
       }
-    } else {
-      page = Math.floor(Math.random() * 30);
-      currentLevel = level;
-      data = await getWords(currentLevel, page, 1);
-    }
 
-    const localData = data.flat();
-    const sliceData = [];
-    for (let i = 0; i < localData.length; i += 1) {
-      const word = localData[Math.floor(Math.random() * localData.length)];
-      if (!sliceData.includes(word)) {
-        sliceData.push(word);
-      } else {
-        i -= 1;
+      const localData = data!.flat();
+      const sliceData: Array<Words> = [];
+      for (let i = 0; i < localData.length; i += 1) {
+        const word = localData[Math.floor(Math.random() * localData.length)];
+        if (!sliceData.includes(word)) {
+          sliceData.push(word);
+        } else {
+          i -= 1;
+        }
       }
+      setWords(sliceData.sort(() => Math.random() - 0.5));
+      dispatch(footerActions.toggleShowStatus(false));
     }
-    setWords(sliceData.sort(() => Math.random() - 0.5));
-    dispatch(toggleShowStatus(false));
+    )();
   }, []);
 
   return (

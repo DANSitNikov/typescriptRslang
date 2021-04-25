@@ -1,8 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Words } from '../utilities/checkDeletedAndDifficultWords';
 
-const withDictionaryPage = (Component) => {
-  function DictionaryPage(props) {
+interface CommonProp {
+  topic: number
+  words: Array<Words>
+  type: string,
+  difficultWords: Array<Words>
+  setPageNumber: () => void
+}
+
+interface Props {
+  pageNumber: number
+}
+
+interface ReturnComponent {
+  length: number
+}
+
+const withDictionaryPage = (Component: React.ComponentType<ReturnComponent & CommonProp>) => {
+  function DictionaryPage(props: Props & CommonProp): JSX.Element {
     const {
       topic, words, type, difficultWords,
       pageNumber, setPageNumber,
@@ -16,26 +32,19 @@ const withDictionaryPage = (Component) => {
       wordsToShowSlice = wordsToShow.slice((pageNumber - 1) * 20, pageNumber * 20);
     }
 
+    const length: number = type === 'learnedWords' ? words.length : wordsToShow.length;
+
     return (
       <Component
         words={wordsToShowSlice}
         type={type}
         difficultWords={difficultWords}
         setPageNumber={setPageNumber}
-        length={type === 'learnedWords' ? words.length : wordsToShow.length}
+        length={length}
         topic={topic}
       />
     );
   }
-
-  DictionaryPage.propTypes = {
-    topic: PropTypes.number.isRequired,
-    words: PropTypes.arrayOf(PropTypes.object).isRequired,
-    type: PropTypes.string.isRequired,
-    difficultWords: PropTypes.arrayOf(PropTypes.object).isRequired,
-    pageNumber: PropTypes.number.isRequired,
-    setPageNumber: PropTypes.func.isRequired,
-  };
 
   return DictionaryPage;
 };

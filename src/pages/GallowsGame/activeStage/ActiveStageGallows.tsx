@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import hangmanOne from '../../../assets/images/hangman/Hangman-0.png';
 import hangmanTwo from '../../../assets/images/hangman/Hangman-1.png';
 import hangmanThree from '../../../assets/images/hangman/Hangman-2.png';
@@ -10,19 +9,34 @@ import hangmanSeven from '../../../assets/images/hangman/Hangman-6.png';
 import Keyboard from '../Keyboard';
 import Answers from '../activeStageAnswers/Answers';
 import style from './activeStage.module.scss';
+import { Words } from '../../../utilities/checkDeletedAndDifficultWords';
 
-const ActiveStageGallows = React.memo((props) => {
+interface Props {
+  word: Words,
+  setNextBtnStatus: (bool: boolean) => void
+  newGame: boolean
+  setNewGame: (bool: boolean) => void
+  setCorrectAnswers: (arr: Array<Words>) => void
+  setWrongAnswers: (arr: Array<Words>) => void
+  correctAnswers: Array<Words>
+  wrongAnswers: Array<Words>
+  activeStage: number
+  setActiveStage: (num: number) => void
+  soundStatus: boolean
+}
+
+const ActiveStageGallows: React.FC<Props> = React.memo((props) => {
   const {
     word, setNextBtnStatus, newGame,
     setNewGame, setCorrectAnswers, setWrongAnswers,
     correctAnswers, wrongAnswers, setActiveStage, activeStage,
     soundStatus,
   } = props;
-  const [maxMistakes] = useState(7);
-  const [mistakesCounter, setMistakesCounter] = useState(0);
-  const [checkedLetters, setCheckedLetters] = useState([]);
-  const [wrong, setWrong] = useState(false);
-  const [correct, setCorrect] = useState(false);
+  const [maxMistakes] = useState<number>(7);
+  const [mistakesCounter, setMistakesCounter] = useState<number>(0);
+  const [checkedLetters, setCheckedLetters] = useState<Array<number>>([]);
+  const [wrong, setWrong] = useState<boolean>(false);
+  const [correct, setCorrect] = useState<boolean>(false);
 
   const images = [
     hangmanOne, hangmanTwo, hangmanThree,
@@ -102,19 +116,5 @@ const ActiveStageGallows = React.memo((props) => {
     </div>
   );
 });
-
-ActiveStageGallows.propTypes = {
-  word: PropTypes.objectOf(PropTypes.any).isRequired,
-  setNextBtnStatus: PropTypes.func.isRequired,
-  newGame: PropTypes.bool.isRequired,
-  setNewGame: PropTypes.func.isRequired,
-  setCorrectAnswers: PropTypes.func.isRequired,
-  setWrongAnswers: PropTypes.func.isRequired,
-  correctAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  wrongAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  activeStage: PropTypes.number.isRequired,
-  setActiveStage: PropTypes.func.isRequired,
-  soundStatus: PropTypes.bool.isRequired,
-};
 
 export default ActiveStageGallows;

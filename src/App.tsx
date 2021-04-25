@@ -18,13 +18,14 @@ import StartSprintGame from './pages/Sprint';
 import MiniGames from './pages/MiniGames';
 import firebaseConfig from './utilities/firebaseSetings';
 
-const App = () => {
+const App: React.FC = () => {
+  const dispatch = useDispatch();
+
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   } else {
     firebase.app();
   }
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(auth());

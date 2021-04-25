@@ -8,18 +8,23 @@ import GameResultWindow from '../../../components/GameResultWindow';
 import FullScreenButtons from '../../../components/FullScreenButton/FullScreenButtons';
 import backImage from '../../../assets/backgrounds/bg-gallows-game.svg';
 import ControlAnswerVolumeButton from '../../../components/ControlAnswerVolumeButton';
+import { Words } from '../../../utilities/checkDeletedAndDifficultWords';
 
-const GallowsGame = (props) => {
+interface Props {
+  words: Array<Words>
+}
+
+const GallowsGame: React.FC<Props> = (props) => {
   const { words } = props;
   const [activeStage, setActiveStage] = useState(1);
   const [nextBtnStatus, setNextBtnStatus] = useState(true);
-  const [correctAnswers, setCorrectAnswers] = useState([]);
-  const [wrongAnswers, setWrongAnswers] = useState([]);
+  const [correctAnswers, setCorrectAnswers] = useState<Array<Words>>([]);
+  const [wrongAnswers, setWrongAnswers] = useState<Array<Words>>([]);
   const [newGame, setNewGame] = useState(true);
   const [value] = useState(20);
   const [fullScreenStatus, setFullScreenStatus] = useState(false);
   const [soundStatus, setSoundStatus] = useState(true);
-  const gameWindow = useRef();
+  const gameWindow = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     document.addEventListener('fullscreenchange', () => {
@@ -27,9 +32,9 @@ const GallowsGame = (props) => {
         setFullScreenStatus(false);
       }
     });
-    gameWindow.current.style.background = `url(${backImage})`;
-    gameWindow.current.style.backgroundSize = 'cover';
-    gameWindow.current.style.backgroundPosition = 'bottom';
+    gameWindow.current!.style.background = `url(${backImage})`;
+    gameWindow.current!.style.backgroundSize = 'cover';
+    gameWindow.current!.style.backgroundPosition = 'bottom';
   }, []);
 
   const onFullscreenBtnClick = () => {
@@ -37,7 +42,7 @@ const GallowsGame = (props) => {
       document.exitFullscreen();
       setFullScreenStatus(false);
     } else {
-      gameWindow.current.requestFullscreen().catch((e) => console.log(e));
+      gameWindow.current!.requestFullscreen().catch((e) => console.log(e));
       setFullScreenStatus(true);
     }
   };
@@ -96,10 +101,6 @@ const GallowsGame = (props) => {
         </div>
       )
   );
-};
-
-GallowsGame.propTypes = {
-  words: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default GallowsGame;

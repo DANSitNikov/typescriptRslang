@@ -1,11 +1,13 @@
 import { Words } from './checkDeletedAndDifficultWords';
 
-export const getFakeWords = (level: number, page: number, count: number): Promise<Array<Words>> => {
+export const getFakeWords = (
+  level: number| null | undefined, page: number | null, count: number,
+): Promise<Array<Words>> => {
   const numbers: Array<number> = [];
   let wordsLevel;
 
   if (level !== 6) {
-    wordsLevel = level + 1;
+    wordsLevel = level! + 1;
   } else {
     wordsLevel = level - 1;
   }
@@ -30,7 +32,9 @@ export const getFakeWords = (level: number, page: number, count: number): Promis
   return Promise.all([...promises]);
 };
 
-export const getWords = (level: number, page: number, count: number): Promise<Array<Words>> => {
+export const getWords = (
+  level: number | null, page: number, count: number,
+): Promise<Array<Words>> => {
   const promises = [];
   const numbers: Array<number> = [];
 
@@ -46,13 +50,13 @@ export const getWords = (level: number, page: number, count: number): Promise<Ar
 
     for (let i = 0; i < count; i += 1) {
       promises.push(
-        fetch(`https://newrslangapi.herokuapp.com/words/?group=${level - 1}&page=${numbers[i]}`)
+        fetch(`https://newrslangapi.herokuapp.com/words/?group=${level! - 1}&page=${numbers[i]}`)
           .then((response) => response.json()),
       );
     }
   } else {
     return Promise.all([
-      fetch(`https://newrslangapi.herokuapp.com/words/?group=${level - 1}&page=${page}`)
+      fetch(`https://newrslangapi.herokuapp.com/words/?group=${level! - 1}&page=${page}`)
         .then((response) => response.json()),
     ]);
   }
