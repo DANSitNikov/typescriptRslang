@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './Description.module.scss';
 
-const Description = () => (
+const Description: React.FC = () => (
   <div className={style.description}>
     <h3>RS Lang</h3>
     <div className={style.description__words}>

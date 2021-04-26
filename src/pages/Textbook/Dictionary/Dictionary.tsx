@@ -8,18 +8,18 @@ import DictionaryPageComponent from './DictionaryPageComponent';
 import {
   getDeletedWords, getDifficultWords, getLearnedWords, getType, getUserAuth,
 } from '../../../selectors/selectors';
-import withDictionaryPage from '../../../hoc/withDictionaryPage';
+import withDictionaryPage, { CommonProp, ReturnComponent } from '../../../hoc/withDictionaryPage';
 import Games from '../Games/Games';
 
-const Dictionary = () => {
+const Dictionary: React.FC = () => {
   const learnedWords = useSelector(getLearnedWords);
   const difficultWords = useSelector(getDifficultWords);
   const deletedWords = useSelector(getDeletedWords);
   const type = useSelector(getType);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [topic, setTopic] = useState(1);
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [topic, setTopic] = useState<number>(1);
   const isAuth = useSelector(getUserAuth);
-  const topics = [1, 2, 3, 4, 5, 6].map((i) => (
+  const topics: JSX.Element[] = [1, 2, 3, 4, 5, 6].map((i) => (
     <span
       onClick={() => {
         setTopic(i);
@@ -42,7 +42,8 @@ const Dictionary = () => {
           <div className={style.dictionary_content}>
             <Switch>
               <Route path="/textbook/dictionary/learning">
-                {withDictionaryPage(DictionaryPageComponent)({
+                {withDictionaryPage(DictionaryPageComponent as React.ComponentType<ReturnComponent
+                  & CommonProp>)({
                   topic,
                   words: learnedWords,
                   type: 'learnedWords',
@@ -55,7 +56,8 @@ const Dictionary = () => {
                 <div className={style.topic}>
                   {topics}
                 </div>
-                {withDictionaryPage(DictionaryPageComponent)({
+                {withDictionaryPage(DictionaryPageComponent as React.ComponentType<ReturnComponent
+                  & CommonProp>)({
                   topic,
                   words: difficultWords,
                   type: 'hardWord',
@@ -68,7 +70,8 @@ const Dictionary = () => {
                 <div className={style.topic}>
                   {topics}
                 </div>
-                {withDictionaryPage(DictionaryPageComponent)({
+                {withDictionaryPage(DictionaryPageComponent as React.ComponentType<ReturnComponent
+                  & CommonProp>)({
                   topic,
                   words: deletedWords,
                   type: 'deletedWord',

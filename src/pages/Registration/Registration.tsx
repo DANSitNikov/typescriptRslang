@@ -2,12 +2,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import './Registration.scss';
-import { Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import * as yup from 'yup';
 import { Button } from 'react-bootstrap';
 import { registration } from '../../actions/userActions';
 
-const Registration = () => {
+const Registration: React.FC = () => {
   const history = useHistory();
 
   const validationsSchema = yup.object().shape({
@@ -35,8 +35,8 @@ const Registration = () => {
           values, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty,
         }) => (
           <div className="Login">
-            <p className="input-field">
-              <label htmlFor={<code>email</code>} />
+            <Form className="input-field">
+              <label htmlFor="email" />
               <br />
               <input
                 placeholder="Email"
@@ -46,12 +46,12 @@ const Registration = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.email}
-                autoComplete={false}
+                autoComplete="false"
               />
-            </p>
+            </Form>
             {touched.email && errors.email && <p className="error">{errors.email}</p>}
-            <p className="input-field">
-              <label htmlFor={<code>secondName</code>} />
+            <Form className="input-field">
+              <label htmlFor="secondName" />
               <br />
               <input
                 placeholder="Пароль"
@@ -61,12 +61,12 @@ const Registration = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.password}
-                autoComplete={false}
+                autoComplete="false"
               />
-            </p>
+            </Form>
             {touched.password && errors.password && <p className="error">{errors.password}</p>}
-            <p className="input-field">
-              <label htmlFor={<code>email</code>} />
+            <Form className="input-field">
+              <label htmlFor="email" />
               <br />
               <input
                 placeholder="Имя"
@@ -76,12 +76,14 @@ const Registration = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.name}
-                autoComplete={false}
+                autoComplete="false"
               />
-            </p>
+            </Form>
             {touched.name && errors.name && <p className="error">{errors.name}</p>}
             <Button
               disabled={!isValid || !dirty}
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
               onClick={handleSubmit}
               type="submit"
             >
@@ -92,58 +94,6 @@ const Registration = () => {
       </Formik>
     </div>
   );
-
-  // return (
-  //   <div className="Registration">
-  //     <form>
-  //       <div className="input-field">
-  //         <input
-  //           placeholder="Your name (necessarily)"
-  //           type="text"
-  //           value={name}
-  //           onChange={(e) => setName(e.target.value)}
-  //         />
-  //         <label htmlFor="email" />
-  //       </div>
-
-  //       <div className="input-field">
-  //         <input
-  //           placeholder="Email (necessarily)"
-  //           type="email"
-  //           value={email}
-  //           onChange={(e) => setEmail(e.target.value)}
-  //         />
-  //         <label htmlFor="email" />
-  //       </div>
-
-  //       <div className="input-field">
-  //         <input
-  //           label="password"
-  //           placeholder="Password (necessarily)"
-  //           value={password}
-  //           onChange={(e) => setPassword(e.target.value)}
-  //         />
-  //         <label htmlFor="email" />
-  //       </div>
-
-  //       <button
-  //         type="button"
-  //         onClick={(e) => {
-  //           if (name.length) {
-  //             e.preventDefault();
-  //             registration(email, password, name);
-  //             setName('');
-  //             setEmail('');
-  //             setPassword('');
-  //             history.push('/login');
-  //           }
-  //         }}
-  //       >
-  //         Register
-  //       </button>
-  //     </form>
-  //   </div>
-  // );
 };
 
 export default Registration;

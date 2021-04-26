@@ -18,39 +18,43 @@ import footerActions from '../../actions/footerAction';
 import Preloader from '../../components/Preloader/Preloader';
 import TextbookSettings from './Settings';
 
-const Textbook = () => {
+const Textbook: React.FC = () => {
   const userId = useSelector(getUserId);
   const difficultWords = useSelector(getDifficultWords);
   const deletedWords = useSelector(getDeletedWords);
   const learnedWords = useSelector(getLearnedWords);
-  const [isFetching, setIsFetching] = useState(false);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const menu = useRef();
+  const menu = useRef<HTMLDivElement | null>(null);
   const isAuth = useSelector(getUserAuth);
-  const pagesArray = [1, 2, 3, 4, 5, 6];
+  const pagesArray: Array<number> = [1, 2, 3, 4, 5, 6];
 
-  useEffect(async () => {
-    dispatch(miniGamesActions.setGameFromTextbookStatus(true));
-    if (difficultWords.length === 0 && deletedWords.length === 0
-      && learnedWords.length === 0 && isAuth) {
-      if (userId) {
-        await firebase.database().ref(`/users/${userId}/deleted`).once('value')
-          .then((snapshot) => snapshot.val())
-          .then((res) => dispatch(dictionaryActions.setRemoveWords(res || [])));
+  useEffect(() => {
+    (
+      async () => {
+        dispatch(miniGamesActions.setGameFromTextbookStatus(true));
+        if (difficultWords.length === 0 && deletedWords.length === 0
+          && learnedWords.length === 0 && isAuth) {
+          if (userId) {
+            await firebase.database().ref(`/users/${userId}/deleted`).once('value')
+              .then((snapshot) => snapshot.val())
+              .then((res) => dispatch(dictionaryActions.setRemoveWords(res || [])));
 
-        await firebase.database().ref(`/users/${userId}/hard`).once('value')
-          .then((snapshot) => snapshot.val())
-          .then((res) => dispatch(dictionaryActions.setHardWords(res || [])));
+            await firebase.database().ref(`/users/${userId}/hard`).once('value')
+              .then((snapshot) => snapshot.val())
+              .then((res) => dispatch(dictionaryActions.setHardWords(res || [])));
 
-        await firebase.database().ref(`/users/${userId}/learned`).once('value')
-          .then((snapshot) => snapshot.val())
-          .then((res) => dispatch(dictionaryActions.setLearnedWords(res || [])));
+            await firebase.database().ref(`/users/${userId}/learned`).once('value')
+              .then((snapshot) => snapshot.val())
+              .then((res) => dispatch(dictionaryActions.setLearnedWords(res || [])));
 
-        setIsFetching(true);
+            setIsFetching(true);
+          }
+        } else {
+          setIsFetching(true);
+        }
       }
-    } else {
-      setIsFetching(true);
-    }
+    )();
   }, [userId]);
 
   useEffect(() => {
@@ -71,10 +75,10 @@ const Textbook = () => {
   }, []);
 
   const showMenu = () => {
-    menu.current.classList.add(style.show);
+    if (menu.current) menu.current.classList.add(style.show);
   };
   const closeMenu = () => {
-    menu.current.classList.remove(style.show);
+    if (menu.current) menu.current.classList.remove(style.show);
   };
 
   return (
@@ -86,7 +90,7 @@ const Textbook = () => {
             {
               pagesArray.map((item) => (
                 <ListGroup.Item key={item}>
-                  <Link id={item} to={`/textbook/${item}`}>{`Группа ${item}`}</Link>
+                  <Link to={`/textbook/${item}`}>{`Группа ${item}`}</Link>
                 </ListGroup.Item>
               ))
             }
@@ -112,7 +116,7 @@ const Textbook = () => {
                 ))
               }
               <Route path="/textbook/dictionary/learning">
-                <Dictionary pageNumber={1} />
+                <Dictionary />
               </Route>
             </Switch>
           </div>

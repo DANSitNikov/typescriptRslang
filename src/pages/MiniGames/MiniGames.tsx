@@ -9,22 +9,22 @@ import ChooseLevel from './ChooseLevel/ChooseLevel';
 import footerActions from '../../actions/footerAction';
 import miniGamesActions from '../../actions/mniGameAction';
 
-const MiniGames = () => {
-  const [showPopup, setShowPopup] = useState(false);
-  const [link, setLink] = useState('none');
+const MiniGames: React.FC = () => {
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [link, setLink] = useState<string>('none');
   const dispatch = useDispatch();
-  const savanna = useRef();
-  const sprint = useRef();
-  const gallows = useRef();
-  const audioCall = useRef();
+  const savanna = useRef<HTMLDivElement | null>(null);
+  const sprint = useRef<HTMLDivElement | null>(null);
+  const gallows = useRef<HTMLDivElement | null>(null);
+  const audioCall = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    savanna.current.style.backgroundImage = `url('${savannaSrc}')`;
-    sprint.current.style.backgroundImage = `url('${sprintSrc}')`;
-    gallows.current.style.backgroundImage = `url('${gallowsSrc}')`;
-    audioCall.current.style.backgroundImage = `url('${audioSrc}')`;
+    if (savanna.current) savanna.current.style.backgroundImage = `url('${savannaSrc}')`;
+    if (sprint.current) sprint.current.style.backgroundImage = `url('${sprintSrc}')`;
+    if (gallows.current) gallows.current.style.backgroundImage = `url('${gallowsSrc}')`;
+    if (audioCall.current) audioCall.current.style.backgroundImage = `url('${audioSrc}')`;
 
-    const keyDownEvent = (event) => {
+    const keyDownEvent = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         document.body.style.overflow = 'auto';
         setShowPopup(false);

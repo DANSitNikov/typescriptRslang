@@ -1,11 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Howl } from 'howler';
-import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import style from './TextbookWordComponent.module.scss';
 import dictionaryActions from '../../../actions/dictionaryAction';
-import checkDeletedAndDifficultWords from '../../../utilities/checkDeletedAndDifficultWords';
+import checkDeletedAndDifficultWords, { Words } from '../../../utilities/checkDeletedAndDifficultWords';
 import {
   getButtonsVisibility,
   getDeletedWords, getDifficultWords, getLearnedWords, getTranslateVisibility, getUserAuth,
@@ -13,7 +12,13 @@ import {
 import checkLearnedWords from '../../../utilities/checkLearnedWords';
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 
-const TextbookWordComponent = (props) => {
+interface Props {
+  type: string
+  word: Words
+  difficult: boolean
+}
+
+const TextbookWordComponent: React.FC<Props> = (props) => {
   const { type, word, difficult } = props;
   const deletedWords = useSelector(getDeletedWords);
   const difficultWords = useSelector(getDifficultWords);
@@ -21,9 +26,9 @@ const TextbookWordComponent = (props) => {
   const learnedWords = useSelector(getLearnedWords);
   const buttonsVisible = useSelector(getButtonsVisibility);
   const translateVisible = useSelector(getTranslateVisibility);
-  const textEx = useRef();
-  const textMeaning = useRef();
-  const wordRef = useRef();
+  const textEx = useRef<HTMLParagraphElement | null>(null);
+  const textMeaning = useRef<HTMLParagraphElement | null>(null);
+  const wordRef = useRef<HTMLHeadingElement | null>(null);
   const dispatch = useDispatch();
 
   const wordSound = new Howl({
@@ -44,7 +49,7 @@ const TextbookWordComponent = (props) => {
       const array = [];
 
       for (let i = 0; i < difficultWords.length; i += 1) {
-        if (difficultWords[i].word !== wordRef.current.textContent) {
+        if (difficultWords[i].word !== wordRef.current!.textContent) {
           array.push(difficultWords[i]);
         }
       }
@@ -71,7 +76,7 @@ const TextbookWordComponent = (props) => {
       const array = [];
 
       for (let i = 0; i < difficultWords.length; i += 1) {
-        if (difficultWords[i].word !== wordRef.current.textContent) {
+        if (difficultWords[i].word !== wordRef.current!.textContent) {
           array.push(difficultWords[i]);
         }
       }
@@ -81,7 +86,7 @@ const TextbookWordComponent = (props) => {
       const array = [];
 
       for (let i = 0; i < deletedWords.length; i += 1) {
-        if (deletedWords[i].word !== wordRef.current.textContent) {
+        if (deletedWords[i].word !== wordRef.current!.textContent) {
           array.push(deletedWords[i]);
         }
       }
@@ -91,8 +96,8 @@ const TextbookWordComponent = (props) => {
   };
 
   useEffect(() => {
-    textEx.current.innerHTML = word.textExample;
-    textMeaning.current.innerHTML = word.textMeaning;
+    textEx.current!.innerHTML = word.textExample;
+    textMeaning.current!.innerHTML = word.textMeaning;
   }, []);
 
   return (
@@ -200,12 +205,6 @@ const TextbookWordComponent = (props) => {
       </div>
     </div>
   );
-};
-
-TextbookWordComponent.propTypes = {
-  type: PropTypes.string.isRequired,
-  word: PropTypes.objectOf(PropTypes.any).isRequired,
-  difficult: PropTypes.bool.isRequired,
 };
 
 export default TextbookWordComponent;

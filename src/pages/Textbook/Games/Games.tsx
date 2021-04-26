@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import savannaSrc from '../../../assets/backgrounds/bg-savanna-game.svg';
 import sprintSrc from '../../../assets/backgrounds/bg-sprint-game.svg';
 import gallowsSrc from '../../../assets/backgrounds/bg-gallows-game.svg';
@@ -10,21 +9,25 @@ import style from './games.module.scss';
 import { getGameWordsFromDict, getGameWordsFromTextbook } from '../../../selectors/selectors';
 /* eslint-disable no-nested-ternary */
 
-const Games = (props) => {
+interface Props {
+  type: string
+}
+
+const Games: React.FC<Props> = (props) => {
   const { type } = props;
-  const savanna = useRef();
-  const sprint = useRef();
-  const gallows = useRef();
-  const audioCall = useRef();
+  const savanna = useRef<HTMLDivElement | null>(null);
+  const sprint = useRef<HTMLDivElement | null>(null);
+  const gallows = useRef<HTMLDivElement | null>(null);
+  const audioCall = useRef<HTMLDivElement | null>(null);
   const wordsFromDictionary = useSelector(getGameWordsFromDict);
   const wordsFromTextbook = useSelector(getGameWordsFromTextbook);
 
   useEffect(() => {
     if (savanna.current) {
-      savanna.current.style.backgroundImage = `url('${savannaSrc}')`;
-      sprint.current.style.backgroundImage = `url('${sprintSrc}')`;
-      gallows.current.style.backgroundImage = `url('${gallowsSrc}')`;
-      audioCall.current.style.backgroundImage = `url('${audioSrc}')`;
+      if (savanna.current) savanna.current.style.backgroundImage = `url('${savannaSrc}')`;
+      if (sprint.current) sprint.current.style.backgroundImage = `url('${sprintSrc}')`;
+      if (gallows.current) gallows.current.style.backgroundImage = `url('${gallowsSrc}')`;
+      if (audioCall.current) audioCall.current.style.backgroundImage = `url('${audioSrc}')`;
     }
   }, [wordsFromTextbook, wordsFromDictionary]);
 
@@ -103,13 +106,9 @@ const Games = (props) => {
         </div>
       )
         : (
-          ''
+          <></>
         )
   );
-};
-
-Games.propTypes = {
-  type: PropTypes.string.isRequired,
 };
 
 export default Games;

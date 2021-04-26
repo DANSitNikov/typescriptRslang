@@ -1,4 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  LegacyRef, Ref,
+  RefObject, useEffect, useRef, useState,
+} from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
@@ -6,23 +9,28 @@ import { useDispatch } from 'react-redux';
 import style from './chooseLevel.module.scss';
 import miniGamesActions from '../../../actions/mniGameAction';
 
-const ChooseLevel = (props) => {
+interface Props {
+  setShowPopup: (bool: boolean) => void
+  link: string
+}
+
+const ChooseLevel: React.FC<Props> = (props) => {
   const { setShowPopup, link } = props;
-  const [levels] = useState([1, 2, 3, 4, 5, 6]);
-  const [disable, setDisable] = useState(true);
-  const popup = useRef();
-  const cards = useRef([]);
+  const [levels] = useState<Array<number>>([1, 2, 3, 4, 5, 6]);
+  const [disable, setDisable] = useState<boolean>(true);
+  const popup = useRef<HTMLDivElement | null>(null);
+  const cards = useRef<Array<RefObject<HTMLDivElement | null>>>([]);
   const dispatch = useDispatch();
 
   cards.current = levels.map(() => React.createRef());
 
-  const setActiveLevel = (level) => {
+  const setActiveLevel = (level: number) => {
     for (let i = 0; i < cards.current.length; i += 1) {
-      if (level === Number(cards.current[i].current.innerText)) {
-        cards.current[i].current.style.background = '#a0ee1d';
+      if (level === Number(cards.current[i]!.current!.innerText)) {
+        cards.current[i].current!.style.background = '#a0ee1d';
         if (disable) setDisable(false);
       } else {
-        cards.current[i].current.style.background = '#5e5eef';
+        cards.current[i].current!.style.background = '#5e5eef';
       }
     }
   };
@@ -62,7 +70,7 @@ const ChooseLevel = (props) => {
         <div className={style.levels}>
           {levels.map((level, i) => (
             <div
-              ref={cards.current[i]}
+              ref={cards.current[i] as Ref<HTMLDivElement> | null}
               key={level}
               className={style.level}
               onClick={() => {

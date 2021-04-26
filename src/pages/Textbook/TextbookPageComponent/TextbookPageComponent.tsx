@@ -2,21 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import style from './TextbookPageComponent.module.scss';
 import TextbookWordComponent from '../TextbookWordComponent';
-import checkDifficultWords from '../../../utilities/checkDeletedAndDifficultWords';
+import checkDifficultWords, { Words } from '../../../utilities/checkDeletedAndDifficultWords';
 import { getDeletedWords, getDifficultWords, getUserAuth } from '../../../selectors/selectors';
 import Pagination from '../../../components/Pagination/Pagination';
 import Games from '../Games/Games';
 import miniGamesActions from '../../../actions/mniGameAction';
 import Preloader from '../../../components/Preloader/Preloader';
 
-const TextbookPageComponent = (props) => {
+interface Props {
+  groupNumber: number
+}
+
+const TextbookPageComponent: React.FC<Props> = (props) => {
   const dataProps = props;
-  const [wordsData, setWordData] = useState();
+  const [wordsData, setWordData] = useState<Array<Words>>();
   const deletedWords = useSelector(getDeletedWords);
   const difficultWords = useSelector(getDifficultWords);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [isThereWords, setIsThereWords] = useState(true);
-  const [type] = useState('textbook');
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [isThereWords, setIsThereWords] = useState<boolean>(true);
+  const [type] = useState<string>('textbook');
   const isAuth = useSelector(getUserAuth);
   const dispatch = useDispatch();
 

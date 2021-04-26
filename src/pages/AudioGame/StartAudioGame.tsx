@@ -35,7 +35,7 @@ const StartAudioGame: React.FC = () => {
     (
       async () => {
         let page;
-        let currentLevel;
+        let currentLevel = level;
         let data;
         if (textbookStatus) {
           page = pageNumber;
@@ -47,7 +47,6 @@ const StartAudioGame: React.FC = () => {
           }
         } else {
           page = Math.floor(Math.random() * 30);
-          currentLevel = level;
           data = await getWords(currentLevel, page, 1);
         }
 

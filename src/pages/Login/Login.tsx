@@ -1,14 +1,14 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import { login } from '../../actions/userActions';
 import './Login.scss';
 
-const Login = () => {
+const Login: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -35,8 +35,8 @@ const Login = () => {
           values, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty,
         }) => (
           <div className="Login">
-            <p className="input-field">
-              <label htmlFor={<code>email</code>} />
+            <Form className="input-field">
+              <label htmlFor="email" />
               <br />
               <input
                 placeholder="Email"
@@ -46,12 +46,12 @@ const Login = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.email}
-                autoComplete={false}
+                autoComplete="false"
               />
-            </p>
+            </Form>
             {touched.email && errors.email && <p className="error">{errors.email}</p>}
-            <p className="input-field">
-              <label htmlFor={<code>secondName</code>} />
+            <Form className="input-field">
+              <label htmlFor="secondName" />
               <br />
               <input
                 placeholder="Пароль"
@@ -61,12 +61,14 @@ const Login = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.password}
-                autoComplete={false}
+                autoComplete="false"
               />
-            </p>
+            </Form>
             {touched.password && errors.password && <p className="error">{errors.password}</p>}
             <Button
               disabled={!isValid || !dirty}
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
               onClick={handleSubmit}
               type="submit"
             >

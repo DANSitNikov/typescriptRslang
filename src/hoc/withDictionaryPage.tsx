@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { SetStateAction } from 'react';
 import { Words } from '../utilities/checkDeletedAndDifficultWords';
 
-interface CommonProp {
+export interface CommonProp {
   topic: number
   words: Array<Words>
   type: string,
-  difficultWords: Array<Words>
-  setPageNumber: () => void
+  difficultWords: Array<Words> | Array<Record<string, never>>
+  setPageNumber: React.Dispatch<SetStateAction<number>>
 }
 
 interface Props {
   pageNumber: number
 }
 
-interface ReturnComponent {
+export interface ReturnComponent {
   length: number
 }
 

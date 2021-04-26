@@ -1,8 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import style from './AuthorCard.module.scss';
 
-const AuthorCard = ({
+interface Props {
+  name: string
+  text: string
+  isReverse: boolean
+  image: string
+}
+
+const AuthorCard: React.FC<Props> = ({
   name, text, isReverse, image,
 }) => (
   <div className={style.card}>
@@ -21,18 +27,5 @@ const AuthorCard = ({
     </div>
   </div>
 );
-
-AuthorCard.propTypes = {
-  name: PropTypes.string,
-  text: PropTypes.string,
-  isReverse: PropTypes.bool,
-  image: PropTypes.string.isRequired,
-};
-
-AuthorCard.defaultProps = {
-  name: 'Author of RSLang',
-  text: 'Member of a team',
-  isReverse: false,
-};
 
 export default AuthorCard;

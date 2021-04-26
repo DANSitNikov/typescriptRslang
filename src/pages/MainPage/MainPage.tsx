@@ -6,7 +6,7 @@ import Video from './Video';
 import Authors from './Authors';
 import style from './mainPage.module.scss';
 
-const MainPage = () => {
+const MainPage: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import React from 'react';
 import style from './Video.module.scss';
 import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo';
 
-const Video = () => (
+const Video: React.FC = () => (
   <div className={style.video}>
     <div>
       <h3>Пример использования нашего приложения!</h3>

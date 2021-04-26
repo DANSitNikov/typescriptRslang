@@ -1,4 +1,9 @@
-export const data = [
+interface DataItem {
+  name: string
+  text: string
+}
+
+export const data: Array<DataItem> = [
   {
     name: 'Даниил Ситников',
     text: 'Вклад в проект: игры "Аудиовызов" и "Виселица", дизайн приложения, приложил руку к логике учебника.',

@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import style from './TextbookSettings.module.scss';
 import { changeTranslateVis, changeButtonsVis } from '../../../reducers/textbookReducer';
+import { GlobalState } from '../../../reducers/rootReducer';
 
-const TextbookSettings = () => {
+const TextbookSettings: React.FC = () => {
   const dispatch = useDispatch();
-  const showTranslate = useSelector((state) => state.textbook.showTranslate);
-  const showButtons = useSelector((state) => state.textbook.showButtons);
+  const showTranslate = useSelector((state: GlobalState) => state.textbook.showTranslate);
+  const showButtons = useSelector((state: GlobalState) => state.textbook.showButtons);
   const onTranslateBtnClick = () => {
     dispatch(changeTranslateVis(!showTranslate));
   };

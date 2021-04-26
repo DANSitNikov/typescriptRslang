@@ -7,8 +7,8 @@ import two from '../../../assets/photos/two.jpg';
 import three from '../../../assets/photos/three.png';
 import four from '../../../assets/photos/four.svg';
 
-const Authors = () => {
-  const [images] = useState([one, two, three, four]);
+const Authors: React.FC = () => {
+  const [images] = useState<Array<string>>([one, two, three, four]);
 
   return (
     <div className={style.authors}>

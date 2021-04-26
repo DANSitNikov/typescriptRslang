@@ -11,31 +11,36 @@ import {
   getGamePageNumber,
   getMiniGameLevel,
 } from '../../selectors/selectors';
+import { Words } from '../../utilities/checkDeletedAndDifficultWords';
 
-const StartSprintGame = () => {
-  const [words, setWords] = useState([]);
-  const [startGame, setStartGame] = useState(false);
+const StartSprintGame: React.FC = () => {
+  const [words, setWords] = useState<Array<Words>>([]);
+  const [startGame, setStartGame] = useState<boolean>(false);
   const level = useSelector(getMiniGameLevel);
   const textbookStatus = useSelector(getGameFromTextbookStatus);
   const pageNumber = useSelector(getGamePageNumber);
   const groupNumber = useSelector(getGameGroupNumber);
   const dispatch = useDispatch();
 
-  useEffect(async () => {
-    let page;
-    let currentLevel;
+  useEffect(() => {
+    (
+      async () => {
+        let page;
+        let currentLevel = level;
 
-    if (textbookStatus) {
-      page = pageNumber;
-      currentLevel = groupNumber + 1;
-    } else {
-      page = Math.floor(Math.random() * 30);
-      currentLevel = level;
-    }
+        if (textbookStatus) {
+          page = pageNumber;
+          if (groupNumber) currentLevel = groupNumber + 1;
+        } else {
+          page = Math.floor(Math.random() * 30);
+          // currentLevel = level;
+        }
 
-    const data = await getWords(currentLevel, page, 10);
-    setWords(data.flat().sort(() => Math.random() - 0.5));
-    dispatch(footerActions.toggleShowStatus(false));
+        const data = await getWords(currentLevel, page, 10);
+        setWords(data.flat().sort(() => Math.random() - 0.5));
+        dispatch(footerActions.toggleShowStatus(false));
+      }
+    )();
   }, []);
 
   return (
