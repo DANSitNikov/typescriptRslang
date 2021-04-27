@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  BrowserRouter, Link, Route, Switch,
+  BrowserRouter, Link, Route, Switch, useHistory,
 } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+// import querystring from 'querystring';
 import style from './Dictionary.module.scss';
 import DictionaryPageComponent from './DictionaryPageComponent';
 import {
@@ -19,6 +20,7 @@ const Dictionary: React.FC = () => {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [topic, setTopic] = useState<number>(1);
   const isAuth = useSelector(getUserAuth);
+  // const history = useHistory();
   const topics: JSX.Element[] = [1, 2, 3, 4, 5, 6].map((i) => (
     <span
       onClick={() => {
@@ -29,6 +31,22 @@ const Dictionary: React.FC = () => {
       {i}
     </span>
   ));
+
+  // useEffect(() => {
+  //   const parsed = querystring.parse(history.location.search.substr(1));
+  //   console.log(parsed);
+  // if (parsed.pageNumber) setPageNumber(Number(parsed.pageNumber));
+  // }, []);
+  //
+  // useEffect(() => {
+  //   let url: string = type;
+  //
+  //   if (url === 'learnedWords' || url === 'unknown') url = 'learning';
+  //   if (url === 'hardWord') url = 'hard';
+  //   if (url === 'deletedWord') url = 'deleted';
+  //   console.log(url, type);
+  //   history.push(`/textbook/dictionary/${url}`);
+  // }, [type]);
 
   return (
     isAuth ? (

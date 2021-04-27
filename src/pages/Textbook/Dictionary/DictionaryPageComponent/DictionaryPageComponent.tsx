@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import style from './DictionaryPageComponent.module.scss';
 import TextbookWordComponent from '../../TextbookWordComponent';
-import checkDifficultWords from '../../../../utilities/checkDeletedAndDifficultWords';
+import checkDifficultWords, { Words } from '../../../../utilities/checkDeletedAndDifficultWords';
 import Pagination from '../../../../components/Pagination';
 import miniGamesActions from '../../../../actions/mniGameAction';
 import dictionaryActions from '../../../../actions/dictionaryAction';
 
-const DictionaryPageComponent = (props) => {
+interface Props {
+  type: string
+  words: Array<Words>
+  difficultWords: Array<Words>
+  setPageNumber: () => void
+  length: number
+  topic: number
+}
+
+const DictionaryPageComponent: React.FC<Props> = (props) => {
   const {
     type, words, difficultWords, setPageNumber, length, topic,
   } = props;
   const dispatch = useDispatch();
-  const [isThereWords, setIsThereWords] = useState(true);
+  const [isThereWords, setIsThereWords] = useState<boolean>(true);
 
   useEffect(() => {
     dispatch(miniGamesActions.setGameFromDictionaryStatus(true));
@@ -55,15 +63,6 @@ const DictionaryPageComponent = (props) => {
       <Pagination setPageNumber={setPageNumber} length={length} />
     </div>
   );
-};
-
-DictionaryPageComponent.propTypes = {
-  type: PropTypes.string.isRequired,
-  words: PropTypes.arrayOf(PropTypes.object).isRequired,
-  difficultWords: PropTypes.arrayOf(PropTypes.object).isRequired,
-  setPageNumber: PropTypes.func.isRequired,
-  length: PropTypes.number.isRequired,
-  topic: PropTypes.number.isRequired,
 };
 
 export default DictionaryPageComponent;

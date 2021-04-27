@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import * as querystring from 'querystring';
 import style from './TextbookPageComponent.module.scss';
 import TextbookWordComponent from '../TextbookWordComponent';
 import checkDifficultWords, { Words } from '../../../utilities/checkDeletedAndDifficultWords';
@@ -23,6 +25,7 @@ const TextbookPageComponent: React.FC<Props> = (props) => {
   const [type] = useState<string>('textbook');
   const isAuth = useSelector(getUserAuth);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     dispatch(miniGamesActions.setGamePage(pageNumber - 1));
@@ -33,9 +36,21 @@ const TextbookPageComponent: React.FC<Props> = (props) => {
         .then((response) => response.json())
         .then((response) => setWordData(response));
     } catch (e) {
-      console.log(e);
+      throw new Error(e);
     }
   }, [pageNumber]);
+
+  useEffect(() => {
+    const parsed = querystring.parse(history.location.search.substr(1));
+    if (parsed.pageNumber) setPageNumber(Number(parsed.pageNumber));
+  }, []);
+
+  useEffect(() => {
+    history.push({
+      pathname: `/textbook/${dataProps.groupNumber + 1}`,
+      search: `pageNumber=${pageNumber}`,
+    });
+  }, [pageNumber, dataProps.groupNumber]);
 
   useEffect(() => {
     if (wordsData) {
